@@ -1223,3 +1223,247 @@ main.container a[href^="mailto"]{
 .hero-buttons .btn:not(.secondary):hover {
   color: var(--primary);
 }
+/* =============================================
+   MOBIL RESPONSIVE STILLƏR
+   ============================================= */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .hero {
+    padding: 60px 0;
+  }
+  
+  .hero h2 {
+    font-size: 32px;
+  }
+  
+  .hero-content {
+    gap: 30px;
+  }
+  
+  .hero-logo-img {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* Mobil (768px və aşağı) */
+@media (max-width: 768px) {
+  /* Header */
+  .brand h1 {
+    font-size: 20px;
+  }
+  
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+  }
+  
+  /* Hero */
+  .hero {
+    padding: 40px 0;
+  }
+  
+  .hero h2 {
+    font-size: 26px;
+    line-height: 1.3;
+  }
+  
+  .hero p {
+    font-size: 15px;
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 25px;
+  }
+  
+  .hero-logo-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+  }
+  
+  .hero-logo-wrapper::before,
+  .hero-logo-wrapper::after {
+    display: none;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-buttons .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+  }
+  
+  /* 3 Sütun kartlar */
+  .three-column {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 30px 0;
+  }
+  
+  .three-column .col {
+    padding: 24px 20px;
+  }
+  
+  .icon {
+    font-size: 40px;
+  }
+  
+  .three-column h3 {
+    font-size: 18px;
+  }
+  
+  /* Info section */
+  .info {
+    padding: 30px 0 40px;
+  }
+  
+  .info h3 {
+    font-size: 20px;
+  }
+  
+  /* Footer */
+  .site-footer {
+    padding: 24px 0;
+  }
+  
+  .site-footer p {
+    font-size: 13px;
+  }
+  
+  /* Səhifə başlıqları */
+  main.container > h2 {
+    font-size: 26px;
+    margin: 30px 0 20px;
+  }
+  
+  /* FAQ və Qaydalar */
+  .faq-item {
+    padding: 16px 18px;
+  }
+  
+  .q {
+    font-size: 15px;
+  }
+  
+  .a {
+    font-size: 14px;
+  }
+  
+  .format-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .format-list li {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  /* Contact */
+  .contact-card {
+    padding: 24px;
+  }
+  
+  .contact-icon {
+    font-size: 40px;
+  }
+  
+  .contact-note ul {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-note li {
+    padding: 10px 14px;
+  }
+  
+  .project-author {
+    padding: 20px;
+  }
+  
+  .project-author p {
+    font-size: 18px;
+  }
+  
+  /* Coming soon */
+  .coming-soon {
+    padding: 40px 24px;
+  }
+  
+  .coming-soon-icon {
+    font-size: 50px;
+  }
+  
+  .coming-soon h3 {
+    font-size: 20px;
+  }
+  
+  /* 404 səhifə */
+  .error-icon {
+    font-size: 60px;
+  }
+  
+  .error-page h1 {
+    font-size: 80px;
+  }
+  
+  .error-page h2 {
+    font-size: 22px;
+  }
+}
+
+/* Kiçik mobil (480px və aşağı) */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .brand h1 {
+    font-size: 17px;
+  }
+  
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .hero h2 {
+    font-size: 22px;
+  }
+  
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .hero-logo-img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .three-column .col {
+    padding: 20px 16px;
+  }
+  
+  .icon {
+    font-size: 36px;
+  }
+  
+  .format-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .error-page h1 {
+    font-size: 60px;
+  }
+}
