@@ -26,3 +26,6 @@ build/
 # Local config
 .env
 .env.local
+# Project notes (personal)
+BDU_KONSPEKT_LAYIHE_QEYDLERI.txt
+*_backup.css
