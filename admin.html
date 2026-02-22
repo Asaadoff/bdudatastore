@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | BDU Konspekt Bankı</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; min-height: 100vh; display: none; }
+    .header { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 1.5rem; }
+    .header a { color: #fff; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; }
+    .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tab { padding: 12px 25px; background: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+    .tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+    .card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .card h3 { color: #333; margin-bottom: 10px; }
+    .card .meta { font-size: 0.85rem; color: #666; margin-bottom: 15px; }
+    .card .meta span { display: block; margin: 5px 0; }
+    .card .actions { display: flex; gap: 10px; }
+    .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+    .btn-approve { background: #28a745; color: #fff; }
+    .btn-reject { background: #dc3545; color: #fff; }
+    .btn-delete { background: #6c757d; color: #fff; }
+    .btn:hover { opacity: 0.8; transform: scale(1.05); }
+    .empty { text-align: center; padding: 60px; color: #666; }
+    .loading { text-align: center; padding: 60px; }
+    .access-denied { text-align: center; padding: 100px 20px; }
+    .access-denied h2 { color: #dc3545; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div id="access-denied" class="access-denied" style="display:none;">
+    <h2> Giriş qadağandır</h2>
+    <p>Bu səhifəyə yalnız adminlər daxil ola bilər.</p>
+    <a href="index.html" style="color:#667eea;">Ana səhifəyə qayıt</a>
+  </div>
+
+  <div id="admin-content" style="display:none;">
+    <header class="header">
+      <h1> Admin Panel</h1>
+      <a href="#" id="logout-btn">Çıxış</a>
+    </header>
+
+    <div class="container">
+      <div class="tabs">
+        <button class="tab active" data-tab="pending"> Gözləyən</button>
+        <button class="tab" data-tab="approved"> Təsdiqlənmiş</button>
+        <button class="tab" data-tab="rejected"> Rədd edilmiş</button>
+      </div>
+
+      <div class="grid" id="konspekt-grid">
+        <div class="loading">Yüklənir...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const ADMIN_EMAILS = ['bdu.datastore@gmail.com', 'admin@bdukonspekt.az', 'esedovumid798@gmail.com'];
+    let currentTab = 'pending';
+
+    auth.onAuthStateChanged((user) => {
+      document.body.style.display = 'block';
+      
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      if (!ADMIN_EMAILS.includes(user.email)) {
+        document.getElementById('access-denied').style.display = 'block';
+        document.getElementById('admin-content').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('access-denied').style.display = 'none';
+      document.getElementById('admin-content').style.display = 'block';
+      loadKonspektler();
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await auth.signOut();
+      window.location.href = 'login.html';
+    });
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentTab = tab.dataset.tab;
+        loadKonspektler();
+      });
+    });
+
+    async function loadKonspektler() {
+      const grid = document.getElementById('konspekt-grid');
+      grid.innerHTML = '<div class="loading">Yüklənir...</div>';
+
+      try {
+        const snapshot = await db.collection('konspektler')
+          .where('status', '==', currentTab)
+          .orderBy('createdAt', 'desc')
+          .get();
+
+        if (snapshot.empty) {
+          grid.innerHTML = '<div class="empty">Bu kateqoriyada konspekt yoxdur</div>';
+          return;
+        }
+
+        grid.innerHTML = '';
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          grid.appendChild(createCard(doc.id, data));
+        });
+      } catch (error) {
+        console.error('Error:', error);
+        grid.innerHTML = '<div class="empty">Xəta: ' + error.message + '</div>';
+      }
+    }
+
+    function createCard(id, data) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const date = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('az-AZ') : '-';
+      
+      card.innerHTML = `
+        <h3>${data.title || 'Adsız'}</h3>
+        <div class="meta">
+          <span> Fənn: ${data.subject || '-'}</span>
+          <span> Fakültə: ${data.faculty || '-'}</span>
+          <span> Yükləyən: ${data.uploadedBy || '-'}</span>
+          <span> Tarix: ${date}</span>
+          <span> <a href="${data.fileURL}" target="_blank">Fayla bax</a></span>
+        </div>
+        <div class="actions">
+          ${currentTab === 'pending' ? `
+            <button class="btn btn-approve" onclick="updateStatus('${id}', 'approved')"> Təsdiqlə</button>
+            <button class="btn btn-reject" onclick="updateStatus('${id}', 'rejected')"> Rədd et</button>
+          ` : ''}
+          ${currentTab === 'rejected' ? `
+            <button class="btn btn-approve" onclick="updateStatus('${id}', 'approved')"> Təsdiqlə</button>
+          ` : ''}
+          <button class="btn btn-delete" onclick="deleteKonspekt('${id}')"> Sil</button>
+        </div>
+      `;
+      return card;
+    }
+
+    async function updateStatus(id, status) {
+      try {
+        await db.collection('konspektler').doc(id).update({ status: status });
+        alert(status === 'approved' ? 'Təsdiqləndi!' : 'Rədd edildi!');
+        loadKonspektler();
+      } catch (error) {
+        alert('Xəta: ' + error.message);
+      }
+    }
+
+    async function deleteKonspekt(id) {
+      if (!confirm('Silmək istədiyinizə əminsiniz?')) return;
+      try {
+        await db.collection('konspektler').doc(id).delete();
+        alert('Silindi!');
+        loadKonspektler();
+      } catch (error) {
+        alert('Xəta: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sayt İdarəetməsi</title>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 50px; background: #1e293b; color: #fff; }
+    .card { background: #334155; padding: 30px; border-radius: 16px; max-width: 400px; margin: 0 auto; }
+    input { padding: 12px; margin: 8px; width: 250px; border-radius: 8px; border: none; font-size: 16px; }
+    button { padding: 14px 28px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; margin: 8px; font-weight: bold; }
+    .btn-login { background: #3b82f6; color: #fff; }
+    .btn-on { background: #f59e0b; color: #fff; }
+    .btn-off { background: #22c55e; color: #fff; }
+    .status { padding: 15px; border-radius: 8px; margin: 20px 0; font-weight: bold; }
+    .status-on { background: #dc2626; }
+    .status-off { background: #22c55e; }
+    h1 { color: #fff; }
+    #loginSection { margin-bottom: 30px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔧 Sayt İdarəetməsi</h1>
+    
+    <div id="loginSection">
+      <p>Admin girişi:</p>
+      <input type="email" id="email" placeholder="E-poçt"><br>
+      <input type="password" id="password" placeholder="Şifrə"><br>
+      <button class="btn-login" onclick="login()">🔐 Giriş</button>
+    </div>
+    
+    <div id="userInfo" class="hidden">
+      <p id="userEmail"></p>
+    </div>
+    
+    <div id="statusSection">
+      <div id="status" class="status">Yüklənir...</div>
+    </div>
+    
+    <div id="controls" class="hidden">
+      <button class="btn-on" onclick="setMaintenance(true)">🛠️ Texniki İş Rejimi AÇIQ</button>
+      <button class="btn-off" onclick="setMaintenance(false)">✅ Saytı Aktiv Et</button>
+    </div>
+  </div>
+  
+  <script>
+    firebase.initializeApp({
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki"
+    });
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    // Status yoxla
+    function checkStatus() {
+      db.doc('settings/site').get().then(doc => {
+        const statusDiv = document.getElementById('status');
+        if (doc.exists && doc.data().maintenance === true) {
+          statusDiv.textContent = '🔴 Hazırda: TEXNİKİ İŞ REJİMİ';
+          statusDiv.className = 'status status-on';
+        } else {
+          statusDiv.textContent = '🟢 Hazırda: SAYT AKTİV';
+          statusDiv.className = 'status status-off';
+        }
+      }).catch(e => {
+        document.getElementById('status').textContent = 'Status: ' + e.message;
+      });
+    }
+    checkStatus();
+    
+    // Auth status
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('userInfo').classList.remove('hidden');
+        document.getElementById('userEmail').textContent = '✅ ' + user.email;
+        document.getElementById('controls').classList.remove('hidden');
+      }
+    });
+    
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => location.reload())
+        .catch(e => alert('Xəta: ' + e.message));
+    }
+    
+    function setMaintenance(value) {
+      db.doc('settings/site').set({ maintenance: value })
+        .then(() => {
+          alert(value ? '🛠️ Texniki iş rejimi aktivdir!' : '✅ Sayt aktiv edildi!');
+          checkStatus();
+        })
+        .catch(e => alert('Xəta: ' + e.message));
+    }
+  </script>
+</body>
+</html>

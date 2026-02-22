@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ümid Əsədov">
+  <meta name="description" content="BDU Konspekt Bankı - Ən çox konspekt paylaşan tələbələr">
+  <title>Liderlik Lövhəsi | BDU Konspekt Bankı</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .leaderboard-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    
+    .page-title { text-align: center; margin-bottom: 40px; }
+    .page-title h2 { font-size: 2.2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+    .page-title p { color: #666; font-size: 1.1rem; }
+    
+    .stats-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .summary-card { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border-radius: 12px; padding: 25px; text-align: center; }
+    .summary-card .number { font-size: 2.5rem; font-weight: 700; }
+    .summary-card .label { opacity: 0.9; margin-top: 5px; }
+    
+    .leaderboard-list { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; }
+    
+    .leaderboard-header { display: grid; grid-template-columns: 60px 1fr 120px 120px; padding: 15px 25px; background: #f8f9fa; font-weight: 600; color: #666; font-size: 0.9rem; }
+    
+    .leaderboard-item { display: grid; grid-template-columns: 60px 1fr 120px 120px; padding: 20px 25px; align-items: center; border-bottom: 1px solid #f0f0f0; transition: all 0.3s; }
+    .leaderboard-item:hover { background: #f8f9ff; }
+    .leaderboard-item:last-child { border-bottom: none; }
+    
+    .rank { font-size: 1.3rem; font-weight: 700; }
+    .rank-1 { color: #FFD700; }
+    .rank-2 { color: #C0C0C0; }
+    .rank-3 { color: #CD7F32; }
+    .rank-other { color: #667eea; }
+    
+    .user-info { display: flex; align-items: center; gap: 15px; }
+    .user-avatar { width: 45px; height: 45px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 1.1rem; overflow: hidden; }
+    .user-name { font-weight: 600; color: #333; }
+    .user-badge { font-size: 0.75rem; color: #667eea; background: rgba(102,126,234,0.1); padding: 3px 8px; border-radius: 10px; margin-left: 8px; }
+    
+    .stat-count { font-weight: 600; color: #333; text-align: center; }
+    .stat-downloads { color: #28a745; text-align: center; }
+    
+    .trophy-icon { font-size: 1.5rem; margin-right: 5px; }
+    
+    .empty-state { text-align: center; padding: 80px 20px; color: #666; }
+    .empty-state .icon { font-size: 5rem; margin-bottom: 20px; opacity: 0.5; }
+    
+    .loading { text-align: center; padding: 60px; color: #666; }
+    
+    .top-3-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+    .top-card { background: #fff; border-radius: 16px; padding: 30px 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.08); position: relative; transition: transform 0.3s; }
+    .top-card:hover { transform: translateY(-5px); }
+    .top-card.gold { border-top: 4px solid #FFD700; }
+    .top-card.silver { border-top: 4px solid #C0C0C0; }
+    .top-card.bronze { border-top: 4px solid #CD7F32; }
+    .top-card .medal { font-size: 3rem; margin-bottom: 15px; }
+    .top-card .avatar { width: 70px; height: 70px; margin: 0 auto 15px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; font-weight: 600; overflow: hidden; }
+    .top-card .name { font-size: 1.1rem; font-weight: 600; color: #333; margin-bottom: 5px; word-break: break-all; }
+    .top-card .count { color: #667eea; font-weight: 600; }
+    
+    @media (max-width: 768px) {
+      .top-3-section { grid-template-columns: 1fr; }
+      .leaderboard-header, .leaderboard-item { grid-template-columns: 50px 1fr 80px; }
+      .leaderboard-header > *:last-child, .leaderboard-item > *:last-child { display: none; }
+    }
+  </style>
+</head>
+<body style="display:none;">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="index.html" class="brand-link">
+          <img src="favicon.svg" alt="Logo" class="brand-logo">
+          <h1>BDU Konspekt Bankı</h1>
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="profile.html" class="mobile-profile-icon" id="mobile-profile-icon" title="Profilim">👤</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menyu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="top-nav" id="top-nav">
+        <a href="index.html">Ana səhifə</a>
+        <a href="konspektler.html">Konspektlər</a>
+        <a href="upload.html">Konspekt yüklə</a>
+        <a href="leaderboard.html" class="active">Liderlər</a>
+        <a href="qaydalar.html">Qaydalar</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Əlaqə</a>
+        <a href="profile.html" class="profile-icon" id="nav-profile-icon" title="Profilim">👤</a>
+        <a href="#" class="logout-btn" id="logout-btn">Çıxış</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="leaderboard-container">
+    <div class="page-title">
+      <h2>🏆 Liderlik Lövhəsi</h2>
+      <p>Ən çox konspekt paylaşan tələbələr</p>
+    </div>
+
+    <div class="stats-summary">
+      <div class="summary-card">
+        <div class="number" id="total-users">0</div>
+        <div class="label">İştirakçı</div>
+      </div>
+      <div class="summary-card">
+        <div class="number" id="total-konspekts">0</div>
+        <div class="label">Konspekt</div>
+      </div>
+      <div class="summary-card">
+        <div class="number" id="total-downloads">0</div>
+        <div class="label">Yüklənmə</div>
+      </div>
+    </div>
+
+    <div class="top-3-section" id="top-3">
+      <div class="loading">Yüklənir...</div>
+    </div>
+
+    <div class="leaderboard-list">
+      <div class="leaderboard-header">
+        <span>#</span>
+        <span>İstifadəçi</span>
+        <span style="text-align:center">Konspekt</span>
+        <span style="text-align:center">Yüklənmə</span>
+      </div>
+      <div id="leaderboard-body">
+        <div class="loading">Yüklənir...</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BDU Konspekt Bankı. All rights reserved.</p>
+      <p class="author">Hazırladı: Ümid Əsədov</p>
+      <a href="https://kofe.al/@asadoff" target="_blank" class="kofe-link">☕ Mənə kofe al</a>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      document.body.style.display = 'block';
+      await loadLeaderboard();
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await auth.signOut();
+      localStorage.removeItem('userAvatar');
+      window.location.href = 'login.html';
+    });
+
+    // Profil avatarını yüklə
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+      const profileIcons = [document.getElementById('nav-profile-icon'), document.getElementById('mobile-profile-icon')];
+      profileIcons.forEach(profileIcon => {
+        if (profileIcon) {
+          const isImage = savedAvatar.startsWith('http') || savedAvatar.startsWith('avatars/') || savedAvatar.includes('/') || savedAvatar.endsWith('.png') || savedAvatar.endsWith('.jpg');
+          if (isImage) {
+            profileIcon.innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+          } else {
+            profileIcon.textContent = savedAvatar;
+          }
+        }
+      });
+    }
+
+    async function loadLeaderboard() {
+      try {
+        // Yalnız təsdiqlənmiş konspektləri al
+        const snapshot = await db.collection('konspektler')
+          .where('status', '==', 'approved')
+          .get();
+        
+        const userStats = {};
+        let totalDownloads = 0;
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const uid = data.uploadedByUid || null;
+          const email = data.uploadedBy || 'Anonim';
+          
+          if (!userStats[email]) {
+            userStats[email] = { count: 0, downloads: 0, uid: uid };
+          }
+          userStats[email].count++;
+          userStats[email].downloads += data.downloads || 0;
+          totalDownloads += data.downloads || 0;
+        });
+
+        // İstifadəçi məlumatlarını al (displayName və avatar)
+        const usersSnapshot = await db.collection('users').get();
+        const usersData = {};
+        usersSnapshot.forEach(doc => {
+          usersData[doc.id] = doc.data();
+        });
+
+        // Sırala
+        const sorted = Object.entries(userStats)
+          .map(([email, stats]) => {
+            const userData = stats.uid ? usersData[stats.uid] : null;
+            return { 
+              email, 
+              displayName: userData?.displayName || email.split('@')[0],
+              avatar: userData?.avatar || null,
+              ...stats 
+            };
+          })
+          .sort((a, b) => b.count - a.count || b.downloads - a.downloads);
+
+        // Statistika
+        document.getElementById('total-users').textContent = sorted.length;
+        document.getElementById('total-konspekts').textContent = snapshot.size;
+        document.getElementById('total-downloads').textContent = totalDownloads;
+
+        // Top 3
+        renderTop3(sorted.slice(0, 3));
+
+        // Tam siyahı
+        renderLeaderboard(sorted);
+
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('leaderboard-body').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Xəta baş verdi</p></div>';
+      }
+    }
+
+    function getInitials(name) {
+      return name.charAt(0).toUpperCase();
+    }
+
+    function getAvatarHtml(avatar, name) {
+      if (avatar && (avatar.startsWith('http') || avatar.startsWith('avatars/'))) {
+        return `<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      }
+      if (avatar) {
+        return avatar; // emoji avatar
+      }
+      return getInitials(name);
+    }
+
+    function renderTop3(top3) {
+      const container = document.getElementById('top-3');
+      
+      if (top3.length === 0) {
+        container.innerHTML = '<div class="empty-state" style="grid-column: 1/-1"><p>Hələ ki heç kim konspekt paylaşmayıb</p></div>';
+        return;
+      }
+
+      const medals = ['🥇', '🥈', '🥉'];
+      const classes = ['gold', 'silver', 'bronze'];
+
+      container.innerHTML = top3.map((user, i) => `
+        <div class="top-card ${classes[i]}">
+          <div class="medal">${medals[i]}</div>
+          <div class="avatar">${getAvatarHtml(user.avatar, user.displayName)}</div>
+          <div class="name">${user.displayName}</div>
+          <div class="count">${user.count} konspekt</div>
+        </div>
+      `).join('');
+    }
+
+    function renderLeaderboard(users) {
+      const body = document.getElementById('leaderboard-body');
+      
+      if (users.length === 0) {
+        body.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Hələ ki liderlik lövhəsi boşdur</p></div>';
+        return;
+      }
+
+      body.innerHTML = users.map((user, i) => {
+        const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+        const trophy = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+        
+        return `
+          <div class="leaderboard-item">
+            <div class="rank ${rankClass}">${trophy} ${i + 1}</div>
+            <div class="user-info">
+              <div class="user-avatar">${getAvatarHtml(user.avatar, user.displayName)}</div>
+              <span class="user-name">${user.displayName}</span>
+            </div>
+            <div class="stat-count">${user.count}</div>
+            <div class="stat-downloads">${user.downloads}</div>
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>

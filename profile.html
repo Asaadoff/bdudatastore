@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ümid Əsədov">
+  <meta name="description" content="BDU Konspekt Bankı - İstifadəçi Profili">
+  <title>Profilim | BDU Konspekt Bankı</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .profile-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    
+    .profile-header { background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 16px; padding: 40px; color: #fff; margin-bottom: 30px; display: flex; align-items: center; gap: 30px; position: relative; }
+    .profile-avatar { width: 100px; height: 100px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; cursor: pointer; position: relative; overflow: hidden; border: 3px solid rgba(255,255,255,0.5); transition: all 0.3s; }
+    .profile-avatar:hover { transform: scale(1.05); border-color: #fff; }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .profile-avatar .edit-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 0.7rem; padding: 5px; text-align: center; opacity: 0; transition: opacity 0.3s; }
+    .profile-avatar:hover .edit-overlay { opacity: 1; }
+    .profile-info h2 { font-size: 1.8rem; margin-bottom: 8px; }
+    .profile-info p { opacity: 0.9; font-size: 1rem; }
+    .profile-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; margin-top: 10px; }
+    
+    /* Avatar Modal */
+    .avatar-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+    .avatar-modal.active { display: flex; }
+    .avatar-modal-content { background: #fff; border-radius: 20px; max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; animation: modalSlide 0.3s ease; margin-top: 60px; }
+    @keyframes modalSlide { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .avatar-modal-header { padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #fff; z-index: 10; }
+    .avatar-modal-header h3 { font-size: 1.4rem; color: #333; }
+    .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #999; transition: color 0.3s; }
+    .close-modal:hover { color: #333; }
+    .avatar-modal-body { padding: 25px; }
+    
+    .avatar-section { margin-bottom: 25px; }
+    .avatar-section h4 { color: #667eea; margin-bottom: 15px; font-size: 1rem; }
+    .avatar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 12px; }
+    .avatar-option { width: 70px; height: 70px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.3s; overflow: hidden; background: #f0f0f0; }
+    .avatar-option:hover { transform: scale(1.1); border-color: #667eea; }
+    .avatar-option.selected { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.3); }
+    .avatar-option img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .custom-url-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+    .custom-url-section h4 { color: #667eea; margin-bottom: 15px; }
+    .url-input-group { display: flex; gap: 10px; }
+    .url-input-group input { flex: 1; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; transition: border-color 0.3s; }
+    .url-input-group input:focus { border-color: #667eea; outline: none; }
+    .url-input-group button { padding: 12px 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+    .url-input-group button:hover { transform: scale(1.05); }
+    
+    .save-avatar-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; margin-top: 20px; transition: all 0.3s; }
+    .save-avatar-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+    
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 25px; text-align: center; box-shadow: 0 2px 15px rgba(0,0,0,0.08); transition: transform 0.3s; }
+    .stat-card:hover { transform: translateY(-5px); }
+    .stat-number { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { color: #666; margin-top: 5px; }
+    
+    .section-title { font-size: 1.4rem; color: #333; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    
+    .konspekt-tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .konspekt-tab { padding: 10px 20px; background: #f0f0f0; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; transition: all 0.3s; }
+    .konspekt-tab.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+    .konspekt-tab .count { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 10px; margin-left: 5px; font-size: 0.8rem; }
+    .konspekt-tab.active .count { background: rgba(255,255,255,0.2); }
+    
+    .konspekt-list { display: grid; gap: 15px; }
+    .konspekt-item { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; }
+    .konspekt-item:hover { box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+    .konspekt-item-info h4 { color: #333; margin-bottom: 5px; }
+    .konspekt-item-info p { color: #666; font-size: 0.9rem; }
+    .konspekt-item-meta { display: flex; gap: 15px; align-items: center; }
+    .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-approved { background: #d4edda; color: #155724; }
+    .status-rejected { background: #f8d7da; color: #721c24; }
+    
+    .empty-state { text-align: center; padding: 60px 20px; color: #666; }
+    .empty-state .icon { font-size: 4rem; margin-bottom: 15px; opacity: 0.5; }
+    
+    .action-btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s; }
+    .btn-view { background: #667eea; color: #fff; text-decoration: none; }
+    .btn-view:hover { background: #5a6fd6; }
+    .btn-delete { background: #dc3545; color: #fff; }
+    .btn-delete:hover { background: #c82333; }
+    
+    .loading { text-align: center; padding: 40px; color: #666; }
+    
+    @media (max-width: 600px) {
+      .profile-header { flex-direction: column; text-align: center; padding: 30px 20px; }
+      .konspekt-item { flex-direction: column; gap: 15px; align-items: flex-start; }
+      .konspekt-item-meta { width: 100%; justify-content: space-between; }
+      .avatar-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body style="display:none;">
+  <!-- Avatar Selection Modal -->
+  <div class="avatar-modal" id="avatar-modal">
+    <div class="avatar-modal-content">
+      <div class="avatar-modal-header">
+        <h3>🎨 Profil Şəklini Seç</h3>
+        <button class="close-modal" id="close-modal">&times;</button>
+      </div>
+      <div class="avatar-modal-body">
+        <div class="avatar-section">
+          <h4>👩‍🎓 Tələbə Avatarları</h4>
+          <div class="avatar-grid" id="student-avatars"></div>
+        </div>
+
+        <div class="avatar-section">
+          <h4>😊 Emoji Avatarları</h4>
+          <div class="avatar-grid" id="emoji-avatars"></div>
+        </div>
+        
+        <button class="save-avatar-btn" onclick="saveAvatar()">✓ Yadda Saxla</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="index.html" class="brand-link">
+          <img src="favicon.svg" alt="Logo" class="brand-logo">
+          <h1>BDU Konspekt Bankı</h1>
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="profile.html" class="mobile-profile-icon" id="mobile-profile-icon" title="Profilim">👤</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menyu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="top-nav" id="top-nav">
+        <a href="index.html">Ana səhifə</a>
+        <a href="konspektler.html">Konspektlər</a>
+        <a href="upload.html">Konspekt yüklə</a>
+        <a href="leaderboard.html">Liderlər</a>
+        <a href="qaydalar.html">Qaydalar</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Əlaqə</a>
+        <a href="profile.html" class="profile-icon active" title="Profilim" id="nav-profile-icon">👤</a>
+        <a href="#" class="logout-btn" id="logout-btn">Çıxış</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar" id="profile-avatar" onclick="openAvatarModal()">
+        <img id="avatar-img" src="" alt="Avatar" style="display:none;">
+        <span id="avatar-emoji">👤</span>
+        <div class="edit-overlay">Dəyiş</div>
+      </div>
+      <div class="profile-info">
+        <h2 id="user-name">Yüklənir...</h2>
+        <p id="user-email" style="opacity:0.7;font-size:0.9rem;"></p>
+        <p id="user-joined">Qeydiyyat tarixi: ...</p>
+        <span class="profile-badge" id="user-badge">Tələbə</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="stat-total">0</div>
+        <div class="stat-label">Ümumi konspekt</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-approved">0</div>
+        <div class="stat-label">Təsdiqlənmiş</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-pending">0</div>
+        <div class="stat-label">Gözləyən</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="stat-downloads">0</div>
+        <div class="stat-label">Ümumi yüklənmə</div>
+      </div>
+    </div>
+
+    <h3 class="section-title">📚 Konspektlərim</h3>
+    
+    <div class="konspekt-tabs">
+      <button class="konspekt-tab active" data-status="all">Hamısı <span class="count" id="count-all">0</span></button>
+      <button class="konspekt-tab" data-status="approved">Təsdiqlənmiş <span class="count" id="count-approved">0</span></button>
+      <button class="konspekt-tab" data-status="pending">Gözləyən <span class="count" id="count-pending">0</span></button>
+      <button class="konspekt-tab" data-status="rejected">Rədd edilmiş <span class="count" id="count-rejected">0</span></button>
+    </div>
+
+    <div class="konspekt-list" id="konspekt-list">
+      <div class="loading">Yüklənir...</div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BDU Konspekt Bankı. All rights reserved.</p>
+      <p class="author">Hazırladı: Ümid Əsədov</p>
+      <a href="https://kofe.al/@asadoff" target="_blank" class="kofe-link">☕ Mənə kofe al</a>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let allKonspektler = [];
+    let currentFilter = 'all';
+    let selectedAvatar = null;
+    let currentUser = null;
+
+    // Default avatarlar - Tələbə şəkilləri
+    const studentAvatars = [
+      'avatars/Screenshot%202026-02-05%20113816.png',
+      'avatars/Screenshot%202026-02-05%20113910.png',
+      'avatars/Screenshot%202026-02-05%20113925.png',
+      'avatars/Screenshot%202026-02-05%20113950.png',
+      'avatars/Screenshot%202026-02-05%20114003.png',
+      'avatars/Screenshot%202026-02-05%20114017.png',
+      'avatars/Screenshot%202026-02-05%20114034.png',
+      'avatars/Screenshot%202026-02-05%20114056.png',
+      'avatars/Screenshot%202026-02-05%20114110.png',
+      'avatars/Screenshot%202026-02-05%20114126.png',
+      'avatars/Screenshot%202026-02-05%20114135.png',
+      'avatars/Screenshot%202026-02-05%20114142.png',
+      'avatars/Screenshot%202026-02-05%20114148.png',
+      'avatars/Screenshot%202026-02-05%20114154.png',
+      'avatars/Screenshot%202026-02-05%20114159.png',
+      'avatars/Screenshot%202026-02-05%20114204.png'
+    ];
+
+    const emojiAvatars = ['😊', '🎓', '📚', '🌟', '🚀', '💡', '🎨', '🎭', '🦊', '🐱', '🐶', '🦁'];
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      currentUser = user;
+      document.body.style.display = 'block';
+      
+      // İstifadəçi məlumatları
+      document.getElementById('user-name').textContent = user.displayName || 'İstifadəçi';
+      document.getElementById('user-email').textContent = user.email;
+      
+      const createdAt = user.metadata.creationTime;
+      if (createdAt) {
+        const date = new Date(createdAt);
+        document.getElementById('user-joined').textContent = 'Qeydiyyat: ' + date.toLocaleDateString('az-AZ');
+      }
+
+      // Admin yoxlaması
+      const ADMIN_EMAILS = ['bdu.datastore@gmail.com', 'admin@bdukonspekt.az', 'esedovumid798@gmail.com'];
+      if (ADMIN_EMAILS.includes(user.email)) {
+        document.getElementById('user-badge').textContent = '👑 Admin';
+      }
+
+      // Avatar yüklə
+      await loadUserAvatar(user.uid);
+
+      // Konspektləri yüklə
+      await loadUserKonspektler(user.uid);
+      
+      // Avatarları modal-a yüklə
+      loadAvatarOptions();
+    });
+
+    async function loadUserAvatar(uid) {
+      try {
+        const doc = await db.collection('users').doc(uid).get();
+        if (doc.exists && doc.data().avatar) {
+          const avatar = doc.data().avatar;
+          setAvatar(avatar);
+          selectedAvatar = avatar;
+          // localStorage-a da saxla
+          localStorage.setItem('userAvatar', avatar);
+        }
+      } catch (e) {
+        console.log('Avatar not found');
+      }
+    }
+
+    function setAvatar(avatar) {
+      const avatarImg = document.getElementById('avatar-img');
+      const avatarEmoji = document.getElementById('avatar-emoji');
+      const navProfileIcon = document.getElementById('nav-profile-icon');
+      const mobileProfileIcon = document.getElementById('mobile-profile-icon');
+      
+      // Şəkil URL-i yoxsa emoji
+      const isImage = avatar.startsWith('http') || avatar.startsWith('avatars/') || avatar.includes('/') || avatar.endsWith('.png') || avatar.endsWith('.jpg');
+      
+      if (isImage) {
+        avatarImg.src = avatar;
+        avatarImg.style.display = 'block';
+        avatarEmoji.style.display = 'none';
+        if (navProfileIcon) {
+          navProfileIcon.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        }
+        if (mobileProfileIcon) {
+          mobileProfileIcon.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        }
+      } else {
+        avatarImg.style.display = 'none';
+        avatarEmoji.style.display = 'block';
+        avatarEmoji.textContent = avatar;
+        if (navProfileIcon) {
+          navProfileIcon.textContent = avatar;
+        }
+        if (mobileProfileIcon) {
+          mobileProfileIcon.textContent = avatar;
+        }
+      }
+    }
+
+    function loadAvatarOptions() {
+      // Tələbə avatarları
+      const studentGrid = document.getElementById('student-avatars');
+      studentGrid.innerHTML = studentAvatars.map(url => `
+        <div class="avatar-option" onclick="selectAvatar('${url}', this)">
+          <img src="${url}" alt="Avatar">
+        </div>
+      `).join('');
+
+      // Emoji avatarları
+      const emojiGrid = document.getElementById('emoji-avatars');
+      emojiGrid.innerHTML = emojiAvatars.map(emoji => `
+        <div class="avatar-option" onclick="selectAvatar('${emoji}', this)" style="font-size:2rem;display:flex;align-items:center;justify-content:center;">
+          ${emoji}
+        </div>
+      `).join('');
+    }
+
+    function selectAvatar(avatar, element) {
+      selectedAvatar = avatar;
+      document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    async function saveAvatar() {
+      if (!selectedAvatar || !currentUser) return;
+      
+      try {
+        await db.collection('users').doc(currentUser.uid).set({
+          avatar: selectedAvatar,
+          email: currentUser.email,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        
+        // localStorage-a da saxla ki digər səhifələr görsün
+        localStorage.setItem('userAvatar', selectedAvatar);
+        
+        setAvatar(selectedAvatar);
+        closeAvatarModal();
+        alert('Avatar yadda saxlanıldı!');
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Xəta baş verdi!');
+      }
+    }
+
+    function openAvatarModal() {
+      document.getElementById('avatar-modal').classList.add('active');
+    }
+
+    function closeAvatarModal() {
+      document.getElementById('avatar-modal').classList.remove('active');
+    }
+
+    document.getElementById('close-modal').addEventListener('click', closeAvatarModal);
+    document.getElementById('avatar-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'avatar-modal') closeAvatarModal();
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await auth.signOut();
+      localStorage.removeItem('userAvatar');
+      window.location.href = 'login.html';
+    });
+
+    async function loadUserKonspektler(uid) {
+      try {
+        const snapshot = await db.collection('konspektler')
+          .where('uploadedByUid', '==', uid)
+          .orderBy('createdAt', 'desc')
+          .get();
+        
+        allKonspektler = [];
+        let totalDownloads = 0;
+        let approvedCount = 0;
+        let pendingCount = 0;
+        let rejectedCount = 0;
+
+        snapshot.forEach(doc => {
+          const data = { id: doc.id, ...doc.data() };
+          allKonspektler.push(data);
+          totalDownloads += data.downloads || 0;
+          
+          if (data.status === 'approved') approvedCount++;
+          else if (data.status === 'pending') pendingCount++;
+          else if (data.status === 'rejected') rejectedCount++;
+        });
+
+        // Statistika
+        document.getElementById('stat-total').textContent = allKonspektler.length;
+        document.getElementById('stat-approved').textContent = approvedCount;
+        document.getElementById('stat-pending').textContent = pendingCount;
+        document.getElementById('stat-downloads').textContent = totalDownloads;
+
+        // Sayğaclar
+        document.getElementById('count-all').textContent = allKonspektler.length;
+        document.getElementById('count-approved').textContent = approvedCount;
+        document.getElementById('count-pending').textContent = pendingCount;
+        document.getElementById('count-rejected').textContent = rejectedCount;
+
+        renderKonspektler();
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('konspekt-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Xəta baş verdi</p></div>';
+      }
+    }
+
+    function renderKonspektler() {
+      const list = document.getElementById('konspekt-list');
+      let filtered = allKonspektler;
+      
+      if (currentFilter !== 'all') {
+        filtered = allKonspektler.filter(k => k.status === currentFilter);
+      }
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Bu kateqoriyada konspekt yoxdur</p></div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(k => {
+        const statusClass = k.status === 'approved' ? 'status-approved' : 
+                           k.status === 'pending' ? 'status-pending' : 'status-rejected';
+        const statusText = k.status === 'approved' ? 'Təsdiqləndi' : 
+                          k.status === 'pending' ? 'Gözləyir' : 'Rədd edildi';
+        
+        const date = k.createdAt ? new Date(k.createdAt.seconds * 1000).toLocaleDateString('az-AZ') : '';
+        
+        return `
+          <div class="konspekt-item">
+            <div class="konspekt-item-info">
+              <h4>${k.title}</h4>
+              <p>${k.subject} • ${k.faculty} • ${date}</p>
+            </div>
+            <div class="konspekt-item-meta">
+              <span class="status-badge ${statusClass}">${statusText}</span>
+              <a href="${k.fileURL}" target="_blank" class="action-btn btn-view">Bax</a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Tab filter
+    document.querySelectorAll('.konspekt-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.konspekt-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.status;
+        renderKonspektler();
+      });
+    });
+  </script>
+</body>
+</html>

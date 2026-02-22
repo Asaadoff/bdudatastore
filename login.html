@@ -1,0 +1,688 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ümid Əsədov">
+  <meta name="description" content="BDU Konspekt Bankı - Giriş səhifəsi">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Giriş — BDU Konspekt Bankı</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: #f5f7fa;
+    }
+    
+    .auth-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sol Panel - Branding */
+    .auth-brand {
+      flex: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 80px 60px;
+      padding-top: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .auth-brand::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+      animation: pulse-bg 15s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-bg {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+    
+    .auth-brand-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+      max-width: 450px;
+    }
+    
+    .auth-brand .logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 30px;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .auth-brand h1 {
+      font-size: 2.5em;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .auth-brand .tagline {
+      font-size: 1.2em;
+      opacity: 0.9;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .mob-br {
+      display: none;
+    }
+
+    .features-list {
+      text-align: left;
+      list-style: none;
+    }
+    
+    .features-list li {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px 0;
+      font-size: 1.05em;
+      opacity: 0.95;
+    }
+    
+    .features-list li span {
+      font-size: 1.5em;
+    }
+    
+    /* Sağ Panel - Form */
+    .auth-form-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      background: #fff;
+    }
+    
+    .auth-form-container {
+      width: 100%;
+      max-width: 420px;
+    }
+    
+    .auth-header {
+      margin-bottom: 40px;
+    }
+
+    .auth-header h2 {
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .auth-header p {
+      color: #666;
+      font-size: 1.05em;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 1em;
+      transition: all 0.3s ease;
+      background: #fafafa;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-group input::placeholder {
+      color: #aaa;
+    }
+    
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
+    .password-wrapper input {
+      padding-right: 50px;
+    }
+    
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #888;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .toggle-password:hover {
+      color: #667eea;
+      transform: scale(1.1);
+    }
+    
+    .forgot-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 0.95em;
+      cursor: pointer;
+    }
+    
+    .remember-me input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #667eea;
+    }
+    
+    .forgot-link {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.95em;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .forgot-link:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+    
+    .auth-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .auth-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .auth-btn:hover::before {
+      left: 100%;
+    }
+    
+    .auth-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    
+    .auth-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+      color: #999;
+      font-size: 0.9em;
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e0e0e0;
+    }
+    
+    .divider span {
+      padding: 0 20px;
+    }
+    
+    .google-btn {
+      width: 100%;
+      padding: 16px;
+      background: #fff;
+      color: #333;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    
+    .google-btn:hover {
+      background: #f8f8f8;
+      border-color: #ddd;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .google-btn img {
+      width: 22px;
+      height: 22px;
+    }
+    
+    .auth-footer {
+      margin-top: 35px;
+      text-align: center;
+      color: #666;
+      font-size: 1em;
+    }
+    
+    .auth-footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .error-message {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      font-size: 0.95em;
+      display: none;
+      animation: shake 0.5s ease;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    
+    .success-message {
+      background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      font-size: 0.95em;
+      display: none;
+    }
+    
+    .back-home {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      font-size: 1em;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+    
+    .back-home:hover {
+      color: #fff;
+      transform: translateX(-5px);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .auth-brand {
+        padding: 40px;
+      }
+      .auth-brand h1 {
+        font-size: 2em;
+      }
+      .features-list {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .mob-br {
+        display: block;
+      }
+      .auth-wrapper {
+        flex-direction: column;
+      }
+      
+      .auth-brand {
+        padding: 40px 30px;
+        min-height: auto;
+      }
+      
+      .auth-brand .logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+      }
+      
+      .auth-brand h1 {
+        font-size: 1.6em;
+        margin-bottom: 10px;
+      }
+      
+      .auth-brand .tagline {
+        font-size: 1em;
+        margin-bottom: 0;
+      }
+
+    .auth-form-panel {
+        padding: 40px 25px;
+      }
+      
+      .auth-header h2 {
+        font-size: 1.6em;
+      }
+      
+      .back-home {
+        top: 15px;
+        left: 15px;
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-wrapper">
+    <!-- Sol Panel -->
+    <div class="auth-brand">
+      
+      <div class="auth-brand-content">
+        <img src="favicon.svg" alt="Logo" class="logo">
+        <h1>BDU Konspekt Bankı</h1>
+        <p class="tagline">Bütün konspektlər bir yerdə.<br class='mob-br'> Tap, paylaş, faydalan!</p>
+        
+        <ul class="features-list">
+          <li><span>📚</span> Önəmli Konspektlər</li>
+          <li><span>🎓</span> Bütün fakültələr</li>
+          <li><span>💾</span> Pulsuz yükləmə</li>
+          <li><span>🔄</span> Daim yenilənir</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Sağ Panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-container">
+        <div class="auth-header">
+          <h2>Xoş gəlmisiniz! 👋</h2>
+          <p>Hesabınıza daxil olun.</p>
+        </div>
+        
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+        
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">E-mail ünvanı</label>
+            <input type="email" id="email" name="email" placeholder="sizin@email.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Şifrə</label>
+            <div class="password-wrapper">
+              <input type="password" id="password" name="password" placeholder="••••••••" required>
+              <button type="button" class="toggle-password" id="toggle-password" aria-label="Şifrəni göstər/gizlə">
+                <svg class="eye-icon" id="eye-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg class="eye-icon" id="eye-closed" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="forgot-row">
+            <label class="remember-me">
+              <input type="checkbox" id="remember">
+              Məni xatırla.
+            </label>
+            <a href="#" class="forgot-link" id="forgot-password-link">Şifrəni unutdum!</a>
+          </div>
+          
+          <button type="submit" class="auth-btn" id="login-btn">Daxil ol</button>
+        </form>
+        
+        <div class="divider"><span>və ya</span></div>
+        
+        <button class="google-btn" id="google-login">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+          Google ilə davam et
+        </button>
+        
+        <p class="auth-footer">
+          Hesabınız yoxdur? <a href="register.html">Qeydiyyatdan keçin!</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <!-- Firebase Analytics & Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  
+  <script>
+    // Firebase konfiqurasiyası
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea",
+      measurementId: "G-PVGQNVRL2P"
+    };
+
+    // Firebase başlat
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+      // Analytics
+      const analytics = firebase.analytics();
+      const db = firebase.firestore();
+
+      // Sehife baxisini izle
+      analytics.logEvent('page_view', {
+        page_title: document.title,
+        page_location: window.location.href
+      });
+
+      // Login/Register cehdi izle
+      function logAuthAttempt(action, success, email = '') {
+        db.collection('auth_logs').add({
+          action: action,
+          success: success,
+          email: email,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          userAgent: navigator.userAgent,
+          ip: ''
+        });
+        analytics.logEvent(action, { success: success });
+      }
+
+    // DOM elementləri
+    const loginForm = document.getElementById('login-form');
+    const loginBtn = document.getElementById('login-btn');
+    const googleBtn = document.getElementById('google-login');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+
+    // Şifrəni göstər/gizlə
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('password');
+    const eyeOpen = document.getElementById('eye-open');
+    const eyeClosed = document.getElementById('eye-closed');
+    
+    togglePassword.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      eyeOpen.style.display = isPassword ? 'block' : 'none';
+      eyeClosed.style.display = isPassword ? 'none' : 'block';
+    });
+
+    // Xəta mesajlarını Azərbaycanca göstər
+    function getErrorMessage(code) {
+      const errors = {
+        'auth/user-not-found': 'Bu e-mail ilə hesab tapılmadı',
+        'auth/wrong-password': 'Şifrə yanlışdır',
+        'auth/invalid-email': 'E-mail formatı düzgün deyil',
+        'auth/user-disabled': 'Bu hesab deaktiv edilib',
+        'auth/too-many-requests': 'Çox sayda uğursuz cəhd. Bir az gözləyin',
+        'auth/invalid-credential': 'E-mail və ya şifrə yanlışdır',
+        'auth/network-request-failed': 'İnternet bağlantısını yoxlayın'
+      };
+      return errors[code] || 'Xəta baş verdi. Yenidən cəhd edin';
+    }
+
+    // Xəta göstər
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      successMessage.style.display = 'none';
+    }
+
+    // Uğur mesajı göstər
+    function showSuccess(message) {
+      successMessage.textContent = message;
+      successMessage.style.display = 'block';
+      errorMessage.style.display = 'none';
+    }
+
+    // Email/Şifrə ilə giriş
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Gözləyin...';
+      errorMessage.style.display = 'none';
+      
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        showSuccess('Giriş uğurlu! Yönləndirilirsiniz...');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+      } catch (error) {
+        showError(getErrorMessage(error.code));
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Daxil ol';
+      }
+    });
+
+    // Google ilə giriş
+    googleBtn.addEventListener('click', async () => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      
+      try {
+        await auth.signInWithPopup(provider);
+        showSuccess('Giriş uğurlu! Yönləndirilirsiniz...');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+      } catch (error) {
+        showError(getErrorMessage(error.code));
+      }
+    });
+
+    // Şifrəni unutdum
+    forgotPasswordLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      
+      if (!email) {
+        showError('Əvvəlcə e-mail ünvanınızı daxil edin');
+        return;
+      }
+      
+      try {
+        await auth.sendPasswordResetEmail(email);
+        showSuccess('Şifrə sıfırlama linki e-mailinizə göndərildi. 📧 E-poçtunuzu və SPAM/Junk qovluğunu yoxlamağı unutmayın!');
+      } catch (error) {
+        showError(getErrorMessage(error.code));
+      }
+    });
+
+    // Əgər artıq giriş edibsə, ana səhifəyə yönləndir
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

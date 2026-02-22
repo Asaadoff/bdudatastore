@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ümid Əsədov">
+  <meta name="description" content="BDU Konspekt Bankı - Qeydiyyat Qaydaları">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Qaydalar – Qeydiyyat</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .rules-container {
+      background: #fff;
+      border-radius: 24px;
+      max-width: 700px;
+      width: 100%;
+      padding: 50px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .rules-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+      background-size: 200% 100%;
+      animation: gradientMove 3s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 30px 10px rgba(102, 126, 234, 0.2); }
+    }
+
+    .header-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: #fff;
+    }
+
+    .header h1 {
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 1.05em;
+    }
+
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .rule-item {
+      display: flex;
+      gap: 18px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+      border-radius: 16px;
+      border-left: 4px solid transparent;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      cursor: default;
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: fadeInLeft 0.5s ease forwards;
+    }
+
+    .rule-item:nth-child(1) { animation-delay: 0.1s; }
+    .rule-item:nth-child(2) { animation-delay: 0.2s; }
+    .rule-item:nth-child(3) { animation-delay: 0.3s; }
+    .rule-item:nth-child(4) { animation-delay: 0.4s; }
+    .rule-item:nth-child(5) { animation-delay: 0.5s; }
+    .rule-item:nth-child(6) { animation-delay: 0.6s; }
+
+    @keyframes fadeInLeft {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .rule-item:hover {
+      transform: translateX(10px);
+      border-left-color: #667eea;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+    }
+
+    .rule-number {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.2em;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .rule-item:hover .rule-number {
+      transform: rotate(10deg) scale(1.1);
+    }
+
+    .rule-content h3 {
+      color: #333;
+      font-size: 1.1em;
+      margin-bottom: 6px;
+    }
+
+    .rule-content p {
+      color: #666;
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 35px;
+      padding: 14px 30px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1em;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .back-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .back-btn:hover::before {
+      left: 100%;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .back-btn svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s;
+    }
+
+    .back-btn:hover svg {
+      transform: translateX(-5px);
+    }
+
+    .footer-note {
+      margin-top: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+      border-radius: 12px;
+      border-left: 4px solid #f59e0b;
+    }
+
+    .footer-note p {
+      color: #92400e;
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-note span {
+      font-size: 1.3em;
+    }
+
+    /* Floating shapes */
+    .shape {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: #fff;
+      top: -100px;
+      left: -100px;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: #fff;
+      bottom: -50px;
+      right: -50px;
+      animation: float 6s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(30px, 30px) rotate(180deg); }
+    }
+
+    @media (max-width: 600px) {
+      .rules-container {
+        padding: 30px 20px;
+      }
+
+      .header h1 {
+        font-size: 1.6em;
+      }
+
+      .rule-item {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .rule-number {
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating shapes -->
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+
+  <div class="rules-container">
+    <div class="header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1>Qeydiyyat Qaydaları</h1>
+      <p>Platformadan istifadə etmək üçün aşağıdakı qaydaları qəbul edin</p>
+    </div>
+
+    <div class="rules-list">
+      <div class="rule-item">
+        <div class="rule-number">1</div>
+        <div class="rule-content">
+          <h3>Yalnız öz materiallarınızı yükləyin</h3>
+          <p>Yüklədiyiniz konspekt, mühazirə və ya qeyd sizin şəxsi əməyiniz olmalıdır. Başqasına məxsus materialı icazəsiz paylaşmaq qadağandır.</p>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-number">2</div>
+        <div class="rule-content">
+          <h3>Keyfiyyətli material paylaşın</h3>
+          <p>Oxunaqlı, düzgün formatlanmış və faydalı materiallar yükləyin. Yarımçıq və ya keyfiyyətsiz fayllar qəbul edilmir.</p>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-number">3</div>
+        <div class="rule-content">
+          <h3>Doğru məlumat daxil edin</h3>
+          <p>Fənn adı, müəllim, fakültə kimi məlumatları düzgün qeyd edin. Yanlış məlumat digər tələbələri çaşdıra bilər.</p>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-number">4</div>
+        <div class="rule-content">
+          <h3>Hörmətli davranış</h3>
+          <p>Digər istifadəçilərə hörmətlə yanaşın. Təhqiredici, ayrıseçkilik edən və ya uyğunsuz məzmun paylaşmaq qadağandır.</p>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-number">5</div>
+        <div class="rule-content">
+          <h3>Admin yoxlaması</h3>
+          <p>Yüklənən hər material əvvəlcə admin tərəfindən yoxlanılır. Qaydalara uyğun olmayan materiallar dərc edilmir.</p>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-number">6</div>
+        <div class="rule-content">
+          <h3>Kommersiya məqsədi yoxdur</h3>
+          <p>Platforma tamamilə pulsuzdur. Materialları satmaq və ya kommersiya məqsədi ilə istifadə etmək qadağandır.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <p><span>⚠️</span> Qaydalara riayət etməyən istifadəçilərin hesabı bloklanacaq.</p>
+    </div>
+
+    <a href="register.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Qeydiyyata qayıt
+    </a>
+  </div>
+</body>
+</html>

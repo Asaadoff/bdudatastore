@@ -1,0 +1,594 @@
+﻿<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Ümid Əsədov">
+  <meta name="description" content="BDU Konspekt Bankı - Konspektlər səhifəsi.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Konspektlər | BDU Konspekt Bankı</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      padding: 60px 20px;
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+    .page-hero h2 {
+      color: #fff;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      position: relative;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    .page-hero p {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.1rem;
+      position: relative;
+    }
+    .page-hero .icon {
+      font-size: 4rem;
+      margin-bottom: 15px;
+      display: block;
+      animation: bounce 2s ease infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .search-section {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(102,126,234,0.15);
+      margin: -50px auto 40px;
+      max-width: 900px;
+      position: relative;
+      z-index: 10;
+    }
+    .search-filter-bar {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+    .search-box svg {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #667eea;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 15px 15px 15px 50px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background: #f8f9fa;
+    }
+    .search-box input:focus {
+      border-color: #667eea;
+      background: #fff;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+    }
+    #faculty-filter {
+      padding: 15px 20px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 1rem;
+      min-width: 220px;
+      background: #f8f9fa;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    #faculty-filter:focus {
+      border-color: #667eea;
+      background: #fff;
+      outline: none;
+    }
+    
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 20px 30px;
+      background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      min-width: 150px;
+      transition: transform 0.3s;
+    }
+    .stat-item:hover {
+      transform: translateY(-5px);
+    }
+    .stat-item .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-item .label {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+    
+    .konspekt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      padding: 0 20px;
+    }
+    .konspekt-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #f0f0f0;
+    }
+    .konspekt-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    }
+    .konspekt-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(102,126,234,0.2);
+    }
+    .konspekt-card h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.25rem;
+      line-height: 1.4;
+    }
+    .konspekt-card .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    .konspekt-card .meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+      color: #666;
+      background: #f8f9fa;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+    .konspekt-card .description {
+      color: #777;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .konspekt-card .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      padding: 12px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+    }
+    .konspekt-card .btn-download:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+      border-radius: 20px;
+      margin: 20px;
+    }
+    .empty-state .empty-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+    .empty-state h3 {
+      color: #333;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .empty-state p {
+      color: #666;
+      margin-bottom: 25px;
+    }
+    .empty-state .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      padding: 15px 35px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+      box-shadow: 0 5px 20px rgba(102,126,234,0.3);
+    }
+    .empty-state .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+    }
+    
+    .loading-spinner {
+      text-align: center;
+      padding: 60px;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid #f0f0f0;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-spinner p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .floating-shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+    }
+    .shape-1 {
+      width: 80px;
+      height: 80px;
+      background: #fff;
+      border-radius: 50%;
+      top: 20%;
+      left: 10%;
+      animation: floatShape 6s ease-in-out infinite;
+    }
+    .shape-2 {
+      width: 60px;
+      height: 60px;
+      background: #fff;
+      top: 60%;
+      right: 15%;
+      transform: rotate(45deg);
+      animation: floatShape 8s ease-in-out infinite reverse;
+    }
+    .shape-3 {
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border-radius: 50%;
+      bottom: 20%;
+      left: 20%;
+      animation: floatShape 7s ease-in-out infinite 1s;
+    }
+    @keyframes floatShape {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+  </style>
+</head>
+<body style="display:none;">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="index.html" class="brand-link">
+          <img src="favicon.svg" alt="Logo" class="brand-logo">
+          <h1>BDU Konspekt Bankı</h1>
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="profile.html" class="mobile-profile-icon" id="mobile-profile-icon" title="Profilim">👤</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menyu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="top-nav" id="top-nav">
+        <a href="index.html">Ana səhifə</a>
+        <a href="konspektler.html" class="active">Konspektlər</a>
+        <a href="upload.html">Konspekt yüklə</a>
+        <a href="leaderboard.html">Liderlər</a>
+        <a href="qaydalar.html">Qaydalar</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Əlaqə</a>
+        <a href="profile.html" class="profile-icon" id="nav-profile-icon" title="Profilim">👤</a>
+        <a href="#" id="logout-btn">Çıxış</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <span class="icon"></span>
+    <h2>Konspektlər</h2>
+    <p>Təsdiqlənmiş bütün konspektlər burada</p>
+  </section>
+
+  <main class="container">
+    <div class="search-section">
+      <div class="search-filter-bar">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <input type="text" id="search-input" placeholder="Konspekt axtar...">
+        </div>
+        <select id="faculty-filter">
+          <option value=""> Bütün fakültələr</option>
+          <option value="Mexanika-riyaziyyat fakültəsi">Mexanika-riyaziyyat</option>
+          <option value="Tətbiqi riyaziyyat və kibernetika fakültəsi">Tətbiqi riyaziyyat və kibernetika</option>
+          <option value="Fizika fakültəsi">Fizika</option>
+          <option value="Kimya fakültəsi">Kimya</option>
+          <option value="Biologiya fakültəsi">Biologiya</option>
+          <option value="Ekologiya və torpaqşünaslıq fakültəsi">Ekologiya və torpaqşünaslıq</option>
+          <option value="Coğrafiya fakültəsi">Coğrafiya</option>
+          <option value="Geologiya fakültəsi">Geologiya</option>
+          <option value="Filologiya fakültəsi">Filologiya</option>
+          <option value="Tarix fakültəsi">Tarix</option>
+          <option value="Beynəlxalq münasibətlər və iqtisadiyyat fakültəsi">Beynəlxalq münasibətlər</option>
+          <option value="Hüquq fakültəsi">Hüquq</option>
+          <option value="Jurnalistika fakültəsi">Jurnalistika</option>
+          <option value="İnformasiya və sənəd menecmenti fakültəsi">İnformasiya və sənəd</option>
+          <option value="Şərqşünaslıq fakültəsi">Şərqşünaslıq</option>
+          <option value="Sosial elmlər və psixologiya fakültəsi">Sosial elmlər və psixologiya</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-item">
+        <div class="number" id="total-count">0</div>
+        <div class="label">Ümumi konspekt</div>
+      </div>
+      <div class="stat-item">
+        <div class="number" id="faculty-count">0</div>
+        <div class="label">Fakültə</div>
+      </div>
+      <div class="stat-item">
+        <div class="number" id="download-count">0</div>
+        <div class="label">Yükləmə</div>
+      </div>
+    </div>
+
+    <div class="konspekt-grid" id="konspekt-grid">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Yüklənir...</p>
+      </div>
+    </div>
+
+    <div class="empty-state" id="empty-state" style="display: none;">
+      <div class="empty-icon"></div>
+      <h3>Hələlik konspekt yoxdur</h3>
+      <p>İlk konspekti sən yükləyə bilərsən!</p>
+      <a href="upload.html" class="btn"> Konspekt yüklə</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BDU Konspekt Bankı. All rights reserved.</p>
+      <p class="author">Hazırladı: Ümid Əsədov</p>
+      <a href="https://kofe.al/@asadoff" target="_blank" class="kofe-link">☕ Mənə kofe al</a>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+      } else {
+        document.body.style.display = 'block';
+        loadKonspektler();
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await auth.signOut();
+      localStorage.removeItem('userAvatar');
+      window.location.href = 'login.html';
+    });
+
+    // Profil avatarını yüklə
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+      const profileIcons = [document.getElementById('nav-profile-icon'), document.getElementById('mobile-profile-icon')];
+      profileIcons.forEach(profileIcon => {
+        if (profileIcon) {
+          const isImage = savedAvatar.startsWith('http') || savedAvatar.startsWith('avatars/') || savedAvatar.includes('/') || savedAvatar.endsWith('.png') || savedAvatar.endsWith('.jpg');
+          if (isImage) {
+            profileIcon.innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+          } else {
+            profileIcon.textContent = savedAvatar;
+          }
+        }
+      });
+    }
+
+    async function loadKonspektler() {
+      const grid = document.getElementById('konspekt-grid');
+      const emptyState = document.getElementById('empty-state');
+
+      try {
+        const snapshot = await db.collection('konspektler')
+          .where('status', '==', 'approved')
+          .orderBy('createdAt', 'desc')
+          .get();
+
+        if (snapshot.empty) {
+          grid.innerHTML = '';
+          emptyState.style.display = 'block';
+          document.getElementById('stats-bar').style.display = 'none';
+          return;
+        }
+
+        emptyState.style.display = 'none';
+        grid.innerHTML = '';
+
+        let totalDownloads = 0;
+        const faculties = new Set();
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const card = createKonspektCard(doc.id, data);
+          grid.appendChild(card);
+          totalDownloads += data.downloads || 0;
+          if (data.faculty) faculties.add(data.faculty);
+        });
+
+        // Update stats
+        document.getElementById('total-count').textContent = snapshot.size;
+        document.getElementById('faculty-count').textContent = faculties.size;
+        document.getElementById('download-count').textContent = totalDownloads;
+
+        setupSearch();
+      } catch (error) {
+        console.error('Error:', error);
+        grid.innerHTML = '<p style="text-align:center;color:#666;padding:40px;">Yüklənmə xətası. Firestore aktivləşdirilib?</p>';
+      }
+    }
+
+    function createKonspektCard(id, data) {
+      const card = document.createElement('div');
+      card.className = 'konspekt-card';
+      card.dataset.faculty = data.faculty || '';
+      card.dataset.title = (data.title || '').toLowerCase();
+      card.dataset.subject = (data.subject || '').toLowerCase();
+
+      const date = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('az-AZ') : '-';
+
+      card.innerHTML = `
+        <h3>${data.title || 'Adsız'}</h3>
+        <div class="meta">
+          <span> ${data.subject || '-'}</span>
+          <span> ${data.faculty ? data.faculty.replace(' fakültəsi', '') : '-'}</span>
+          <span> ${date}</span>
+        </div>
+        ${data.description ? `<p class="description">${data.description.substring(0, 120)}${data.description.length > 120 ? '...' : ''}</p>` : ''}
+        <a href="${data.fileURL}" target="_blank" class="btn-download" onclick="trackDownload('${id}')">
+           Yüklə
+        </a>
+      `;
+      return card;
+    }
+
+    async function trackDownload(id) {
+      try {
+        await db.collection('konspektler').doc(id).update({
+          downloads: firebase.firestore.FieldValue.increment(1)
+        });
+      } catch (e) { console.log(e); }
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('search-input');
+      const facultyFilter = document.getElementById('faculty-filter');
+
+      function filterCards() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const faculty = facultyFilter.value;
+        const cards = document.querySelectorAll('.konspekt-card');
+        let visible = 0;
+
+        cards.forEach(card => {
+          const matchSearch = card.dataset.title.includes(searchTerm) || card.dataset.subject.includes(searchTerm);
+          const matchFaculty = !faculty || card.dataset.faculty === faculty;
+          const show = matchSearch && matchFaculty;
+          card.style.display = show ? 'block' : 'none';
+          if (show) visible++;
+        });
+
+        document.getElementById('total-count').textContent = visible;
+      }
+
+      searchInput.addEventListener('input', filterCards);
+      facultyFilter.addEventListener('change', filterCards);
+    }
+  </script>
+</body>
+</html>

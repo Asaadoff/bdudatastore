@@ -1,0 +1,10 @@
+# BDU Konspekt Banki - Robots.txt
+# https://asaadoff.github.io/bdu-konspekt-banki/
+
+User-agent: *
+Allow: /
+
+# Sayt xeritesi
+Sitemap: https://asaadoff.github.io/bdu-konspekt-banki/sitemap.xml
+
+# Xos geldiniz, axtaris botlari!

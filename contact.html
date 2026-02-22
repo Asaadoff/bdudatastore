@@ -1,0 +1,218 @@
+﻿<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Ümid Əsədov">
+  <meta name="description" content="BDU Konspekt Bankı ilə əlaqə. Suallar, təkliflər və əməkdaşlıq üçün bizə yazın.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Əlaqə  BDU Konspekt Bankı</title>
+      <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <meta name="theme-color" content="#667eea">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="display:none;">
+  <div class="loader-wrapper" id="loader">
+    <div class="loader"></div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="index.html" class="brand-link">
+          <img src="favicon.svg" alt="Logo" class="brand-logo">
+          <h1>BDU Konspekt Bankı</h1>
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="profile.html" class="mobile-profile-icon" id="mobile-profile-icon" title="Profilim">👤</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menyu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="top-nav" id="top-nav">
+        <a href="index.html">Ana səhifə</a>
+        <a href="konspektler.html">Konspektlər</a>
+        <a href="upload.html">Konspekt yüklə</a>
+        <a href="leaderboard.html">Liderlər</a>
+        <a href="qaydalar.html">Qaydalar</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html" class="active">Əlaqə</a>
+        <a href="profile.html" class="profile-icon" id="nav-profile-icon" title="Profilim">👤</a>
+        <a href="#" class="logout-btn" id="logout-btn">Çıxış</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Əlaqə</h2>
+    <p>Suallar, təkliflər və ya problemlər üçün bizə yazın:</p>
+
+    <div class="contact-info">
+        <style>
+          @media (min-width: 900px) {
+            .contact-info-flex {
+              max-width: 800px !important;
+              gap: 48px !important;
+            }
+            .contact-info-flex .contact-card {
+              min-width: 320px !important;
+              min-height: 180px !important;
+              font-size: 1.13em;
+            }
+            .contact-info-flex .contact-icon {
+              font-size: 2.7em !important;
+            }
+          }
+        </style>
+        <div class="contact-info-flex" style="display: flex; justify-content: center; align-items: stretch; gap: 32px; flex-wrap: wrap; max-width:600px; margin:0 auto;">
+          <div class="contact-card" style="flex:1 1 0; min-width:220px; min-height:140px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+            <div class="contact-icon">📧</div>
+            <h3 style="margin:8px 0 4px 0; font-size:1.1em;">E-mail</h3>
+            <p style="margin:0;"><a href="mailto:bdu.datastore@gmail.com">bdu.datastore@gmail.com</a></p>
+          </div>
+          <div class="contact-card" style="flex:1 1 0; min-width:220px; min-height:140px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+            <div class="contact-icon" aria-label="Telegram">&#128241;</div>
+            <h3 style="margin:8px 0 4px 0; font-size:1.1em;">Telegram</h3>
+            <p style="margin:0;"><a href="https://t.me/asaadoff" target="_blank" rel="noopener noreferrer">Asadoff</a></p>
+          </div>
+        </div>
+    </div>
+
+    <div class="contact-note">
+      <h3>Nə barədə yaza bilərsiniz?</h3>
+      <ul>
+        <li>🐛 Saytda xəta və ya problem tapdınız</li>
+        <li>💡 Yeni funksiya təklifi</li>
+        <li>📚 Konspektlə bağlı suallar</li>
+        <li>🤝 Əməkdaşlıq təklifləri</li>
+      </ul>
+    </div>
+
+    <div class="project-author">
+      <h3>Layihənin müəllifi</h3>
+      <p>Ümid Əsədov</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BDU Konspekt Bankı. All rights reserved.</p>
+      <p class="author">Hazırladı: Ümid Əsədov</p>
+      <a href="https://kofe.al/@asadoff" target="_blank" class="kofe-link">☕ Mənə kofe al</a>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <!-- Firebase Analytics & Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Firebase konfiqurasiyası
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+      // Analytics ve Firestore
+      const analytics = firebase.analytics();
+      const db = firebase.firestore();
+
+      // Sehife baxisini izle
+      analytics.logEvent('page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname
+      });
+
+      // Istifadeci fealiyyetlerini Firestore-a yaz
+      function logActivity(action, details = {}) {
+        const user = auth.currentUser;
+        if (user) {
+          db.collection('user_activities').add({
+            userId: user.uid,
+            userEmail: user.email,
+            action: action,
+            details: details,
+            page: window.location.pathname,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            userAgent: navigator.userAgent
+          });
+        }
+      }
+
+      // Login olan istifadecini izle
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          logActivity('page_visit', { page: document.title });
+        }
+      });
+
+      // Butun klikleri izle
+      document.addEventListener('click', (e) => {
+        const target = e.target.closest('a, button');
+        if (target) {
+          analytics.logEvent('click', {
+            element: target.tagName,
+            text: target.textContent?.substring(0, 50),
+            href: target.href || ''
+          });
+          logActivity('click', {
+            element: target.tagName,
+            text: target.textContent?.substring(0, 50)
+          });
+        }
+      });
+
+      // Auth yoxlamasi - login olmayanlari login sehifesine yonlendir
+      auth.onAuthStateChanged((user) => {
+        if (!user) {
+          window.location.href = 'login.html';
+        } else {
+          document.body.style.display = 'block';
+        }
+      });
+    
+    // Logout button
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await auth.signOut();
+          localStorage.removeItem('userAvatar');
+          window.location.href = 'login.html';
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      });
+    }
+
+    // Profil avatarını yüklə
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+      const profileIcons = [document.getElementById('nav-profile-icon'), document.getElementById('mobile-profile-icon')];
+      profileIcons.forEach(profileIcon => {
+        if (profileIcon) {
+          const isImage = savedAvatar.startsWith('http') || savedAvatar.startsWith('avatars/') || savedAvatar.includes('/') || savedAvatar.endsWith('.png') || savedAvatar.endsWith('.jpg');
+          if (isImage) {
+            profileIcon.innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+          } else {
+            profileIcon.textContent = savedAvatar;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Ümid Əsədov">
+  <title>Konspekt Yüklə | BDU Konspekt Bankı</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .upload-container { max-width: 600px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .upload-container h2 { text-align: center; color: #667eea; margin-bottom: 10px; }
+    .upload-container .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #667eea; outline: none; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .help-text { font-size: 0.85rem; color: #666; margin-top: 5px; }
+    .help-text a { color: #667eea; }
+    .btn-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .success-msg { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; text-align: center; margin-top: 20px; display: none; }
+    .error-msg { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; text-align: center; margin-top: 20px; display: none; }
+    .drive-steps { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
+    .drive-steps h4 { color: #333; margin-bottom: 15px; }
+    .drive-steps ol { margin: 0; padding-left: 20px; color: #555; }
+    .drive-steps li { margin-bottom: 8px; }
+  </style>
+</head>
+<body style="display:none;">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="index.html" class="brand-link">
+          <img src="favicon.svg" alt="Logo" class="brand-logo">
+          <h1>BDU Konspekt Bankı</h1>
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="profile.html" class="mobile-profile-icon" id="mobile-profile-icon" title="Profilim">👤</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menyu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="top-nav" id="top-nav">
+        <a href="index.html">Ana səhifə</a>
+        <a href="konspektler.html">Konspektlər</a>
+        <a href="upload.html" class="active">Konspekt yüklə</a>
+        <a href="leaderboard.html">Liderlər</a>
+        <a href="qaydalar.html">Qaydalar</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Əlaqə</a>
+        <a href="profile.html" class="profile-icon" id="nav-profile-icon" title="Profilim">👤</a>
+        <a href="#" class="logout-btn" id="logout-btn">Çıxış</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="upload-container">
+      <h2> Konspekt Yüklə</h2>
+      <p class="subtitle">Konspektini paylaş, digər tələbələrə kömək et!</p>
+
+      <div class="drive-steps">
+        <h4>📁 Google Drive ilə necə yükləmək olar?</h4>
+        <ol>
+          <li>Faylınızı <a href="https://drive.google.com" target="_blank">Google Drive</a>-a yükləyin</li>
+          <li>Fayla sağ klikləyin → "Paylaş" seçin</li>
+          <li>"Linki olan hər kəs baxa bilər" seçin</li>
+          <li>Linki kopyalayın və aşağıya yapışdırın</li>
+        </ol>
+      </div>
+
+      <form id="upload-form">
+        <div class="form-group">
+          <label for="title">Konspekt adı *</label>
+          <input type="text" id="title" required placeholder="Məs: Riyazi analiz - 1-ci fəsil">
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Fənn *</label>
+          <input type="text" id="subject" required placeholder="Məs: Riyazi analiz">
+        </div>
+
+        <div class="form-group">
+          <label for="faculty">Fakültə *</label>
+          <select id="faculty" required>
+            <option value="">Fakültə seçin...</option>
+            <option value="Mexanika-riyaziyyat fakültəsi">Mexanika-riyaziyyat fakültəsi</option>
+            <option value="Tətbiqi riyaziyyat və kibernetika fakültəsi">Tətbiqi riyaziyyat və kibernetika fakültəsi</option>
+            <option value="Fizika fakültəsi">Fizika fakültəsi</option>
+            <option value="Kimya fakültəsi">Kimya fakültəsi</option>
+            <option value="Biologiya fakültəsi">Biologiya fakültəsi</option>
+            <option value="Ekologiya və torpaqşünaslıq fakültəsi">Ekologiya və torpaqşünaslıq fakültəsi</option>
+            <option value="Coğrafiya fakültəsi">Coğrafiya fakültəsi</option>
+            <option value="Geologiya fakültəsi">Geologiya fakültəsi</option>
+            <option value="Filologiya fakültəsi">Filologiya fakültəsi</option>
+            <option value="Tarix fakültəsi">Tarix fakültəsi</option>
+            <option value="Beynəlxalq münasibətlər və iqtisadiyyat fakültəsi">Beynəlxalq münasibətlər və iqtisadiyyat fakültəsi</option>
+            <option value="Hüquq fakültəsi">Hüquq fakültəsi</option>
+            <option value="Jurnalistika fakültəsi">Jurnalistika fakültəsi</option>
+            <option value="İnformasiya və sənəd menecmenti fakültəsi">İnformasiya və sənəd menecmenti fakültəsi</option>
+            <option value="Şərqşünaslıq fakültəsi">Şərqşünaslıq fakültəsi</option>
+            <option value="Sosial elmlər və psixologiya fakültəsi">Sosial elmlər və psixologiya fakültəsi</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Açıqlama</label>
+          <textarea id="description" placeholder="Konspekt haqqında qısa məlumat (optional)"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="fileURL">🔗 Fayl linki (Google Drive) *</label>
+          <input type="url" id="fileURL" required placeholder="https://drive.google.com/file/d/...">
+          <p class="help-text">Google Drive, Dropbox, OneDrive və s. linkləri dəstəklənir</p>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn"> Göndər</button>
+      </form>
+
+      <div class="success-msg" id="success-msg">
+         Konspekt uğurla göndərildi! Admin təsdiqlədikdən sonra saytda görünəcək.
+      </div>
+      <div class="error-msg" id="error-msg"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BDU Konspekt Bankı. All rights reserved.</p>
+      <p class="author">Hazırladı: Ümid Əsədov</p>
+      <a href="https://kofe.al/@asadoff" target="_blank" class="kofe-link">☕ Mənə kofe al</a>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+  <script src="script.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    let emailVerified = false;
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+      } else {
+        document.body.style.display = 'block';
+        // Google istifadəçiləri üçün emailVerified həmişə true
+        emailVerified = user.emailVerified || user.providerData.some(p => p.providerId === 'google.com');
+        
+        if (!emailVerified) {
+          showEmailVerificationWarning();
+        }
+      }
+    });
+
+    function showEmailVerificationWarning() {
+      const form = document.getElementById('upload-form');
+      const warning = document.createElement('div');
+      warning.style.cssText = 'background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:20px;border-radius:12px;margin-bottom:20px;text-align:center;';
+      warning.innerHTML = `
+        <p style="margin-bottom:10px;font-weight:600;">⚠️ E-poçt ünvanınız təsdiqlənməyib!</p>
+        <p style="margin-bottom:15px;font-size:14px;">Konspekt yükləmək üçün e-poçtunuzu təsdiqləməlisiniz.</p>
+        <button onclick="resendVerificationEmail()" style="background:#fff;color:#d97706;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;">Təsdiq e-poçtu göndər</button>
+      `;
+      form.parentNode.insertBefore(warning, form);
+      
+      // Formu deaktiv et
+      document.getElementById('submit-btn').disabled = true;
+      document.getElementById('submit-btn').style.opacity = '0.5';
+      document.getElementById('submit-btn').style.cursor = 'not-allowed';
+    }
+
+    async function resendVerificationEmail() {
+      try {
+        await auth.currentUser.sendEmailVerification();
+        alert('Təsdiq e-poçtu göndərildi! 📧 E-poçtunuzu və SPAM/Junk qovluğunu yoxlamayı unutmayın!');
+      } catch (error) {
+        if (error.code === 'auth/too-many-requests') {
+          alert('Çox sayda cəhd. Bir az gözləyin.');
+        } else {
+          alert('Xəta baş verdi.');
+        }
+      }
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await auth.signOut();
+      localStorage.removeItem('userAvatar');
+      window.location.href = 'login.html';
+    });
+
+    // Profil avatarını yüklə
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+      const profileIcons = [document.getElementById('nav-profile-icon'), document.getElementById('mobile-profile-icon')];
+      profileIcons.forEach(profileIcon => {
+        if (profileIcon) {
+          const isImage = savedAvatar.startsWith('http') || savedAvatar.startsWith('avatars/') || savedAvatar.includes('/') || savedAvatar.endsWith('.png') || savedAvatar.endsWith('.jpg');
+          if (isImage) {
+            profileIcon.innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+          } else {
+            profileIcon.textContent = savedAvatar;
+          }
+        }
+      });
+    }
+
+    document.getElementById('upload-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // E-poçt təsdiqlənməyibsə, icazə vermə
+      if (!emailVerified) {
+        alert('Konspekt yükləmək üçün e-poçtunuzu təsdiqləməlisiniz!');
+        return;
+      }
+      
+      const btn = document.getElementById('submit-btn');
+      const successMsg = document.getElementById('success-msg');
+      const errorMsg = document.getElementById('error-msg');
+      
+      btn.disabled = true;
+      btn.textContent = ' Göndərilir...';
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+
+      try {
+        const user = auth.currentUser;
+        
+        await db.collection('konspektler').add({
+          title: document.getElementById('title').value,
+          subject: document.getElementById('subject').value,
+          faculty: document.getElementById('faculty').value,
+          fileURL: document.getElementById('fileURL').value,
+          description: document.getElementById('description').value,
+          status: 'pending',
+          uploadedBy: user.email,
+          uploadedByUid: user.uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          downloads: 0
+        });
+
+        successMsg.style.display = 'block';
+        document.getElementById('upload-form').reset();
+      } catch (error) {
+        console.error('Error:', error);
+        errorMsg.textContent = ' Xəta: ' + error.message;
+        errorMsg.style.display = 'block';
+      }
+
+      btn.disabled = false;
+      btn.textContent = ' Göndər';
+    });
+  </script>
+</body>
+</html>

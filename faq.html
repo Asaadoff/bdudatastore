@@ -1,0 +1,214 @@
+﻿<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="author" content="Ümid Əsədov">
+  <meta name="description" content="BDU Konspekt Bankı haqqında tez-tez verilən suallar. Platforma necə işləyir?">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>FAQ  BDU Konspekt Bankı</title>
+      <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <meta name="theme-color" content="#667eea">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="display:none;">
+  <div class="loader-wrapper" id="loader">
+    <div class="loader"></div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="index.html" class="brand-link">
+          <img src="favicon.svg" alt="Logo" class="brand-logo">
+          <h1>BDU Konspekt Bankı</h1>
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="profile.html" class="mobile-profile-icon" id="mobile-profile-icon" title="Profilim">👤</a>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menyu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="top-nav" id="top-nav">
+        <a href="index.html">Ana səhifə</a>
+        <a href="konspektler.html">Konspektlər</a>
+        <a href="upload.html">Konspekt yüklə</a>
+        <a href="leaderboard.html">Liderlər</a>
+        <a href="qaydalar.html">Qaydalar</a>
+        <a href="faq.html" class="active">FAQ</a>
+        <a href="contact.html">Əlaqə</a>
+        <a href="profile.html" class="profile-icon" id="nav-profile-icon" title="Profilim">👤</a>
+        <a href="#" class="logout-btn" id="logout-btn">Çıxış</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Tez-tez verilən suallar</h2>
+
+    <div class="faq-item">
+      <p class="q">Bu platforma nə üçündür?</p>
+      <p class="a">BDU Konspekt Bankı Bakı Dövlət Universiteti tələbələrinin mühazirə, konspekt və digər tədris materiallarını bir-biri ilə paylaşması üçün yaradılmış könüllü platformadır.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="q">Buraya kim material yükləyə bilər?</p>
+      <p class="a">İstənilən BDU tələbəsi və ya məzunu öz qeydlərini yükləyə bilər.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="q">Yüklənən materiallar yoxlanılır?</p>
+      <p class="a">Bəli. Hər bir material əvvəlcə admin tərəfindən yoxlanılır, uyğun olduqda dərc edilir.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="q">Hansı formatlarda fayl yükləmək olar?</p>
+      <p class="a">Aşağıdakı formatlar qəbul olunur:</p>
+      <ul class="format-list">
+        <li>📄 PDF</li>
+        <li>📝 Word (.doc, .docx)</li>
+        <li>📊 Excel (.xls, .xlsx)</li>
+        <li>📽 PowerPoint (.ppt, .pptx)</li>
+        <li>🖼 Şəkil (JPG, PNG)</li>
+        <li>📁 Digər sənəd formatları</li>
+      </ul>
+    </div>
+
+    <div class="faq-item">
+      <p class="q">Materiallara görə pul ödənilir?</p>
+      <p class="a">Xeyr. Platforma tamamilə pulsuzdur  həm yükləmək, həm də əldə etmək.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="q">Müəllif hüquqları necə qorunur?</p>
+      <p class="a">Yüklənən hər materialda müəllifin adı göstərilir. Razılıq olmadan materialın kommersiya məqsədi ilə istifadəsi qadağandır.</p>
+    </div>
+
+    <div class="faq-item">
+      <p class="q">Problemlə qarşılaşsam, kimə müraciət edə bilərəm?</p>
+      <p class="a">Əlaqə səhifəsindəki e-mail ünvanına yaza bilərsiniz.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BDU Konspekt Bankı. All rights reserved.</p>
+      <p class="author">Hazırladı: Ümid Əsədov</p>
+      <a href="https://kofe.al/@asadoff" target="_blank" class="kofe-link">☕ Mənə kofe al</a>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <!-- Firebase Analytics & Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // Firebase konfiqurasiyası
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0pQKqXugTV3qBYTVH21mztdLAf5c5p2A",
+      authDomain: "bdu-konspekt-banki.firebaseapp.com",
+      projectId: "bdu-konspekt-banki",
+      storageBucket: "bdu-konspekt-banki.firebasestorage.app",
+      messagingSenderId: "497443439455",
+      appId: "1:497443439455:web:7742a5df64d1a2f6582cea"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+      // Analytics ve Firestore
+      const analytics = firebase.analytics();
+      const db = firebase.firestore();
+
+      // Sehife baxisini izle
+      analytics.logEvent('page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname
+      });
+
+      // Istifadeci fealiyyetlerini Firestore-a yaz
+      function logActivity(action, details = {}) {
+        const user = auth.currentUser;
+        if (user) {
+          db.collection('user_activities').add({
+            userId: user.uid,
+            userEmail: user.email,
+            action: action,
+            details: details,
+            page: window.location.pathname,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            userAgent: navigator.userAgent
+          });
+        }
+      }
+
+      // Login olan istifadecini izle
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          logActivity('page_visit', { page: document.title });
+        }
+      });
+
+      // Butun klikleri izle
+      document.addEventListener('click', (e) => {
+        const target = e.target.closest('a, button');
+        if (target) {
+          analytics.logEvent('click', {
+            element: target.tagName,
+            text: target.textContent?.substring(0, 50),
+            href: target.href || ''
+          });
+          logActivity('click', {
+            element: target.tagName,
+            text: target.textContent?.substring(0, 50)
+          });
+        }
+      });
+
+      // Auth yoxlamasi - login olmayanlari login sehifesine yonlendir
+      auth.onAuthStateChanged((user) => {
+        if (!user) {
+          window.location.href = 'login.html';
+        } else {
+          document.body.style.display = 'block';
+        }
+      });
+    
+    // Logout button
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await auth.signOut();
+          localStorage.removeItem('userAvatar');
+          window.location.href = 'login.html';
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      });
+    }
+
+    // Profil avatarını yüklə
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+      const profileIcons = [document.getElementById('nav-profile-icon'), document.getElementById('mobile-profile-icon')];
+      profileIcons.forEach(profileIcon => {
+        if (profileIcon) {
+          const isImage = savedAvatar.startsWith('http') || savedAvatar.startsWith('avatars/') || savedAvatar.includes('/') || savedAvatar.endsWith('.png') || savedAvatar.endsWith('.jpg');
+          if (isImage) {
+            profileIcon.innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+          } else {
+            profileIcon.textContent = savedAvatar;
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

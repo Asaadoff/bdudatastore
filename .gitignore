@@ -1,0 +1,28 @@
+# Logs
+firebase-debug.log
+*.log
+
+# Temp files
+temp_*.json
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Dependencies (əgər varsa)
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+
+# Local config
+.env
+.env.local
